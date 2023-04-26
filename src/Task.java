@@ -1,43 +1,47 @@
 public class Task {
+    private int id;
     private String name;
-    private String bio;
-    private final int id;
-    private static int idGenerator = 0;
-    private String status;
-    public Task() {
-       id = idGenerator;
-       idGenerator++;
-    }
+    private String description;
+    private Status status;
+
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setBio(String bio) {
-        this.bio = bio;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public static void setIdGenerator(int idGenerator) {
-        Task.idGenerator = idGenerator;
-    }
-
-    public void setStatus(String status) {
+    public void setStatus (Status status) {
         this.status = status;
+    }
+
+    public void setId (int id) {
+        this.id = id;
     }
 
     public int getId() {
         return id;
     }
 
-    public String getBio() {
-        return bio;
+    public String getDescription() {
+        return description;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
+    }
+    @Override
+    public String toString() {
+        return "Task" + System.lineSeparator() +
+                "name=" + getName() + System.lineSeparator() +
+                "id=" + getId() + System.lineSeparator() +
+                "description=" + getDescription() + System.lineSeparator() +
+                "status=" + getStatus() + System.lineSeparator();
     }
 }

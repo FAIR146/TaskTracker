@@ -1,37 +1,46 @@
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Manager {
-    ArrayList<Task> tasks = new ArrayList<>();
-    Task task = new Task();
-    String statusNew = "New";
-    String statusInProgress = "In Progress";
-    String statusDone = "Done";
+    HashMap<Integer, Task> tasks = new HashMap<>();
+
+
     public Manager () {
-        tasks.add(task);
-    }
-    public void setStatusNew (Task task) {
-        task.setStatus(statusNew);
-    }
-    public void setStatusInProgress (Task task) {
-        task.setStatus(statusInProgress);
-    }
-    public void setStatusDone (Task task) {
-        task.setStatus(statusDone);
-    }
-    public void removeAllTasks() {
-        tasks.removeAll(tasks);
-    }
-    public void removeTaskById (int id) {
-        tasks.remove(id);
-    }
-    public Task getTaskById (int id) {
-        tasks.stream()
-                .filter(task -> task.getId() == id)
-                .collect(Collectors.toList());
-        return task;
-    }
-    public void setStatus () {
 
     }
+    public void createTask (String name, String description, Status status) {
+        Epic epic = new Epic();
+        epic.setName(name);
+        epic.setDescription(description);
+        epic.setStatus(status);
+        tasks.put(id,epic); // ???
+
+    }
+    public void addSubTask (Epic epic, String name, String description, Status status) {
+        SubTask subTask = new SubTask(epic);
+        subTask.setDescription(description);
+        subTask.setStatus(status);
+        subTask.setName(name);
+        epic.addSubTask(subTask);
+    }
+    public void getAllTasks () {
+        tasks.forEach((key, value) -> {
+            System.out.println("Задача:" + value);
+        });
+    }
+    public void getAllEpicSubTasks (Epic epic) {
+        epic.getSubTasks();
+    }
+    public void removeAllTasks() {
+
+    }
+    public void removeTaskById (int id) {
+       tasks.remove(id);
+    }
+    public Task getTaskById (int id) {
+        return tasks.get(id);
+    }
+
 }
