@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.List;
 
 public class Manager {
     HashMap<Integer, Task> tasks = new HashMap<>();
@@ -10,12 +9,12 @@ public class Manager {
     public Manager () {
 
     }
-    public void createTask (String name, String description, Status status) {
+    public void createEpic (String name, String description, Status status) {
         Epic epic = new Epic();
         epic.setName(name);
         epic.setDescription(description);
         epic.setStatus(status);
-        tasks.put(id,epic); // ???
+        tasks.put(id,epic);
 
     }
     public void addSubTask (Epic epic, String name, String description, Status status) {
@@ -25,10 +24,8 @@ public class Manager {
         subTask.setName(name);
         epic.addSubTask(subTask);
     }
-    public void getAllTasks () {
-        tasks.forEach((key, value) -> {
-            System.out.println("Задача:" + value);
-        });
+    public List<Task> getAllTasks () {
+        return new ArrayList<>(tasks.values());
     }
     public void getAllEpicSubTasks (Epic epic) {
         epic.getSubTasks();
