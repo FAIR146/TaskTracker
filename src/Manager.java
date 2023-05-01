@@ -2,42 +2,83 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class Manager {
-    HashMap<Integer, Task> tasks = new HashMap<>();
-
-
+public class Manager extends InMemoryTaskDao {
     public Manager () {
 
     }
-    public void createEpic (String name, String description, Status status) {
-        Epic epic = new Epic();
-        epic.setName(name);
-        epic.setDescription(description);
-        epic.setStatus(status);
-        tasks.put(id,epic);
 
+    @Override
+    public long addTask(String name, String description, Status status) {
+        return super.addTask(name, description, status);
     }
-    public void addSubTask (Epic epic, String name, String description, Status status) {
-        SubTask subTask = new SubTask(epic);
-        subTask.setDescription(description);
-        subTask.setStatus(status);
-        subTask.setName(name);
-        epic.addSubTask(subTask);
+
+    @Override
+    public long addEpic(String name, String description) {
+        return super.addEpic(name, description);
     }
-    public List<Task> getAllTasks () {
-        return new ArrayList<>(tasks.values());
+
+    @Override
+    public long addSubTask(long id, String name, String description, Status status) {
+        return super.addSubTask(id, name, description, status);
     }
-    public void getAllEpicSubTasks (Epic epic) {
-        epic.getSubTasks();
+
+    @Override
+    public void removeEpicById(long id) {
+        super.removeEpicById(id);
     }
+
+    @Override
+    public void removeTaskById(long id) {
+        super.removeTaskById(id);
+    }
+
+    @Override
+    public void removeSubTaskById(long id) {
+        super.removeSubTaskById(id);
+    }
+
+    @Override
+    public void removeAllEpics() {
+        super.removeAllEpics();
+    }
+
+    @Override
+    public void removeAllSubTasks() {
+        super.removeAllSubTasks();
+    }
+
+    @Override
     public void removeAllTasks() {
-
-    }
-    public void removeTaskById (int id) {
-       tasks.remove(id);
-    }
-    public Task getTaskById (int id) {
-        return tasks.get(id);
+        super.removeAllTasks();
     }
 
+    @Override
+    public Epic getEpicById(long id) {
+        return super.getEpicById(id);
+    }
+
+    @Override
+    public Task getTaskById(long id) {
+        return super.getTaskById(id);
+    }
+
+    @Override
+    public SubTask getSubTaskById(long id) {
+        return super.getSubTaskById(id);
+    }
+
+    @Override
+    public List<Epic> getAllEpics() {
+        return super.getAllEpics();
+    }
+
+    @Override
+    public List<SubTask> getAllSubTasks() {
+        return super.getAllSubTasks();
+    }
+
+    @Override
+    public List<Task> getAllTasks() {
+        return super.getAllTasks();
+    }
 }
