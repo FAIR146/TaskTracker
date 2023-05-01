@@ -1,84 +1,65 @@
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-public class Manager extends InMemoryTaskDao {
-    public Manager () {
+public class Manager  {
+    private final TaskDao taskDao = new InMemoryTaskDao();
 
-    }
-
-    @Override
     public long addTask(String name, String description, Status status) {
-        return super.addTask(name, description, status);
+        return taskDao.addTask(name,description,status);
     }
 
-    @Override
     public long addEpic(String name, String description) {
-        return super.addEpic(name, description);
+        return taskDao.addEpic(name, description);
     }
 
-    @Override
     public long addSubTask(long id, String name, String description, Status status) {
-        return super.addSubTask(id, name, description, status);
+        return taskDao.addSubTask(id, name, description, status);
     }
 
-    @Override
     public void removeEpicById(long id) {
-        super.removeEpicById(id);
+        taskDao.removeEpicById(id);
     }
 
-    @Override
     public void removeTaskById(long id) {
-        super.removeTaskById(id);
+        taskDao.removeTaskById(id);
     }
 
-    @Override
     public void removeSubTaskById(long id) {
-        super.removeSubTaskById(id);
+        taskDao.removeSubTaskById(id);
     }
 
-    @Override
     public void removeAllEpics() {
-        super.removeAllEpics();
+        taskDao.removeAllEpics();
     }
 
-    @Override
     public void removeAllSubTasks() {
-        super.removeAllSubTasks();
+        taskDao.removeAllSubTasks();
     }
 
-    @Override
     public void removeAllTasks() {
-        super.removeAllTasks();
+        taskDao.removeAllTasks();
     }
 
-    @Override
     public Epic getEpicById(long id) {
-        return super.getEpicById(id);
+        return taskDao.getEpicById(id);
     }
 
-    @Override
     public Task getTaskById(long id) {
-        return super.getTaskById(id);
+        return taskDao.getTaskById(id);
     }
 
-    @Override
     public SubTask getSubTaskById(long id) {
-        return super.getSubTaskById(id);
+        return taskDao.getSubTaskById(id);
     }
 
-    @Override
     public List<Epic> getAllEpics() {
-        return super.getAllEpics();
+        return taskDao.getAllEpics();
     }
 
-    @Override
     public List<SubTask> getAllSubTasks() {
-        return super.getAllSubTasks();
+        return taskDao.getAllSubTasks();
     }
 
-    @Override
     public List<Task> getAllTasks() {
-        return super.getAllTasks();
+        return taskDao.getAllTasks();
     }
 }
