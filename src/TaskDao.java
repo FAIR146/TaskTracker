@@ -1,4 +1,3 @@
-import java.util.HashMap;
 import java.util.List;
 
 public interface TaskDao {
@@ -17,4 +16,7 @@ public interface TaskDao {
      Epic getEpicById (long id);
      SubTask getSubTaskById (long id);
      Task getTaskById (long id);
+     void updateTask (Task task);
+     void updateEpic (Epic epic);
+     void updateSubTask (SubTask subTask);
 }

@@ -3,109 +3,120 @@ import java.util.HashMap;
 import java.util.List;
 
 public class InMemoryTaskDao implements TaskDao{
-    private final HashMap<Long, Task> taskHashMap = new HashMap<>();
-    private final HashMap<Long, Epic> epicHashMap = new HashMap<>();
-    private final HashMap<Long, SubTask> subTaskHashMap = new HashMap<>();
-    private long idTask;
-    private static long idGeneratorTask = 0;
-    private long idEpic;
-    private static long idGeneratorEpic = 0;
-    private long idSubTask;
-    private static long idGeneratorSubTask = 0;
+    private final HashMap<Long, Task> tasks = new HashMap<>();
+    private final HashMap<Long, Epic> epics = new HashMap<>();
+    private final HashMap<Long, SubTask> subTasks = new HashMap<>();
+
+    private long idGeneratorTask = 0;
+    private long idGeneratorEpic = 0;
+    private long idGeneratorSubTask = 0;
+
     @Override
     public long addTask(String name, String description, Status status) {
-        idTask = idGeneratorTask;
-        idGeneratorTask++;
         Task task = new Task();
         task.setName(name);
         task.setDescription(description);
         task.setStatus(status);
-        task.setId(idTask);
-        taskHashMap.put(idTask, task);
+        task.setId(idGeneratorTask);
+        tasks.put(idGeneratorTask, task);
+        idGeneratorTask++;
         return task.getId();
     }
 
     @Override
     public long addEpic(String name, String description) {
-        idEpic = idGeneratorEpic;
-        idGeneratorEpic++;
         Epic epic = new Epic();
         epic.setName(name);
         epic.setDescription(description);
-        epic.setId(idTask);
-        epicHashMap.put(idTask, epic);
+        epic.setId(idGeneratorEpic);
+        epics.put(idGeneratorEpic, epic);
+        idGeneratorEpic++;
         return epic.getId();
     }
 
     @Override
     public long addSubTask(long id, String name, String description, Status status) {
-        idSubTask = idGeneratorSubTask;
-        idGeneratorSubTask++;
         SubTask subTask = new SubTask(getEpicById(id));
         subTask.setDescription(description);
         subTask.setStatus(status);
         subTask.setName(name);
-        subTaskHashMap.put(id, subTask);
+        subTasks.put(idGeneratorSubTask, subTask);
+        idGeneratorSubTask++;
         return subTask.getId();
     }
 
     @Override
     public void removeEpicById(long id) {
-        epicHashMap.remove(id);
+        epics.remove(id);
     }
 
     @Override
     public void removeSubTaskById(long id) {
-        subTaskHashMap.remove(id);
+        subTasks.remove(id);
     }
 
     @Override
     public void removeTaskById(long id) {
-        taskHashMap.remove(id);
+        tasks.remove(id);
     }
 
     @Override
     public void removeAllTasks() {
-        taskHashMap.clear();
+        tasks.clear();
     }
 
     @Override
     public void removeAllEpics() {
-        epicHashMap.clear();
+        epics.clear();
     }
 
     @Override
     public void removeAllSubTasks() {
-        subTaskHashMap.clear();
+        subTasks.clear();
     }
 
     @Override
     public List<Task> getAllTasks() {
-        return new ArrayList<>(taskHashMap.values());
+        return new ArrayList<>(tasks.values());
     }
 
     @Override
     public List<Epic> getAllEpics() {
-        return new ArrayList<>(epicHashMap.values());
+        return new ArrayList<>(epics.values());
     }
 
     @Override
     public List<SubTask> getAllSubTasks() {
-         return new ArrayList<>(subTaskHashMap.values());
+         return new ArrayList<>(subTasks.values());
     }
 
     @Override
     public Epic getEpicById(long id) {
-        return epicHashMap.get(id);
+        return epics.get(id);
     }
 
     @Override
     public SubTask getSubTaskById(long id) {
-        return subTaskHashMap.get(id);
+        return subTasks.get(id);
     }
 
     @Override
     public Task getTaskById(long id) {
-        return taskHashMap.get(id);
+        return tasks.get(id);
+    }
+
+    @Override
+    public void updateTask(Task task) {
+        tasks.put(task.getId(), task);
+    }
+
+    @Override
+    public void updateEpic(Epic epic) {
+        epics.put(epic.getId(),epic);
+    }
+
+    @Override
+    public void updateSubTask(SubTask subTask) {
+        subTasks.put(subTask.getId(), subTask);
     }
 }

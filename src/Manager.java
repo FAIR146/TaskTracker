@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class Manager  {
@@ -61,5 +62,31 @@ public class Manager  {
 
     public List<Task> getAllTasks() {
         return taskDao.getAllTasks();
+    }
+    public void updateTask (long id, String name, String description, Status status) {
+        Task task = new Task();
+        task.setName(name);
+        task.setDescription(description);
+        task.setStatus(status);
+        task.setId(id);
+        taskDao.updateTask(task);
+    }
+    public void updateEpic (long id, String name, String description) {
+        Epic epic = new Epic();
+        List<SubTask> subTasks = taskDao.getEpicById(id).getSubTasks();
+        epic.setName(name);
+        epic.setDescription(description);
+        epic.setId(id);
+        for (SubTask subTask:subTasks) {
+            epic.addSubTask(subTask);
+        }
+        taskDao.updateEpic(epic);
+    }
+    public void updateSubTask (long id, String name, String description, Status status) {
+        SubTask subTask = new SubTask(getEpicById(id));
+        subTask.setDescription(description);
+        subTask.setStatus(status);
+        subTask.setName(name);
+        taskDao.updateSubTask(subTask);
     }
 }
