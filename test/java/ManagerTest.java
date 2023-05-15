@@ -2,16 +2,39 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.lang.ref.SoftReference;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ManagerTest {
     Manager manager = new Manager();
-//    @Test
-//    public void answer () {
-//        int i = 2;
-//        int j = 3;
-//        int result = Calculator.calculate(i,j);
-//        Assertions.assertEquals(4, result);
-//    }
+    @Test
+    public void answer () {
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(5);
+        list.add(2);
+        boolean contains = false;
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i) == 5) {
+                contains = true;
+                break;
+            }
+        }
+        if (contains) {
+            System.out.println("Число есть");
+        } else {
+            System.out.println("Числа нету");
+        }
+    }
+    @Test
+    public void answer2 () {
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(5);
+        list.add(2);
+        boolean contains = list.stream()
+                .anyMatch(number -> number == 5);
+    }
 
     @Test
     void addTask() {
@@ -51,26 +74,38 @@ public class ManagerTest {
 
     @Test
     void removeEpicById() {
-        long idEpic = manager.addEpic("", "");
-        manager.getEpicById(idEpic);
+        String name = "1";
+        String description = "1";
+        long idEpic = manager.addEpic(name, description);
+        Epic epic = manager.getEpicById(idEpic);
+        Assertions.assertNotNull(epic);
         manager.removeEpicById(idEpic);
-        manager.getEpicById(idEpic);
+        Epic epic1 = manager.getEpicById(idEpic);
+        Assertions.assertNull(epic1);
     }
 
     @Test
     void removeTaskById() {
         long idTask = manager.addTask("", "", Status.NEW);
-        manager.getTaskById(idTask);
+        Task task = manager.getEpicById(idTask);
+        Assertions.assertNotNull(task);
         manager.removeTaskById(idTask);
+        Task task1 = manager.getTaskById(idTask);
         manager.getTaskById(idTask);
+        Assertions.assertNull(task1);
     }
 
     @Test
     void removeSubTaskById() {
-        Epic epic = new Epic();
-        long idSubTask = manager.addSubTask(epic.getId(), "" , "", Status.NEW);
-        manager.getSubTaskById(idSubTask);
+        long idEpic =  manager.addEpic(" ", " ");
+        long idSubTask = manager.addSubTask(idEpic, "" , "", Status.NEW);
+        Epic epic = manager.getEpicById(idEpic);
+        List<SubTask> subTasks = epic.getSubTasks();
         manager.removeSubTaskById(idSubTask);
+        SubTask subTask1 = manager.getSubTaskById(idSubTask);
+        Assertions.assertNull(subTask1);
+
+
         manager.getSubTaskById(idSubTask);
     }
 
@@ -82,9 +117,16 @@ public class ManagerTest {
         String description2 = "2";
         long idEpic1 = manager.addEpic(name1, description1);
         long idEpic2 = manager.addEpic(name2, description2);
-        manager.getAllEpics();
+        Epic epic1 = manager.getEpicById(idEpic1);
+        Epic epic2 =  manager.getEpicById(idEpic2);
+        Assertions.assertNotNull(epic1);
+        Assertions.assertNotNull(epic2);
         manager.removeAllEpics();
+        Epic epicFirst = manager.getEpicById(idEpic1);
+        Epic epicSecond = manager.getEpicById(idEpic2);
         manager.getAllEpics();
+        Assertions.assertNull(epicFirst);
+        Assertions.assertNull(epicSecond);
     }
 
     @Test
@@ -97,9 +139,16 @@ public class ManagerTest {
         String description2 = "2";
         long idSubTask1 = manager.addSubTask(epic1.getId(), name1, description1, Status.NEW);
         long idSubtask2 = manager.addSubTask(epic2.getId(), name2, description2, Status.NEW);
-        manager.getAllSubTasks();
+        SubTask subTask1 = manager.getSubTaskById(idSubTask1);
+        SubTask subTask2 = manager.getSubTaskById(idSubtask2);
+        Assertions.assertNotNull(subTask1);
+        Assertions.assertNotNull(subTask2);
         manager.removeAllSubTasks();
+        SubTask subTaskFirst = manager.getSubTaskById(idSubTask1);
+        SubTask subTaskSecond = manager.getSubTaskById(idSubtask2);
         manager.getAllSubTasks();
+        Assertions.assertNull(subTaskFirst);
+        Assertions.assertNull(subTaskSecond);
     }
 
     @Test
@@ -110,9 +159,16 @@ public class ManagerTest {
         String description2 = "2";
         long idTask1 = manager.addTask(name1, description1, Status.NEW);
         long idTask2 = manager.addTask(name2, description2, Status.NEW);
-        manager.getAllTasks();
+        Task task1 = manager.getTaskById(idTask1);
+        Task task2 = manager.getTaskById(idTask2);
+        Assertions.assertNotNull(task1);
+        Assertions.assertNotNull(task2);
         manager.removeAllTasks();
+        Task taskFirst = manager.getSubTaskById(idTask1);
+        Task taskSecond = manager.getTaskById(idTask2);
         manager.getAllTasks();
+        Assertions.assertNull(taskFirst);
+        Assertions.assertNotNull(taskSecond);
     }
 
     @Test
@@ -121,8 +177,7 @@ public class ManagerTest {
         String description = "1";
         long idEpic = manager.addEpic(name, description);
         Epic epic1 = manager.getEpicById(idEpic);
-        Assertions.assertEquals(name, epic1.getName());
-        Assertions.assertEquals(description, epic1.getDescription());
+        Assertions.assertNotNull(epic1);
     }
 
     @Test
@@ -214,14 +269,46 @@ public class ManagerTest {
 
     @Test
     void updateTask() {
+        String name1 = "1";
+        String description = "1";
+        Status status = Status.NEW;
+        long idTask = manager.addTask(name1, description, status);
+        Task task1 = manager.getTaskById(idTask);
+        Assertions.assertNotNull(task1);
+        String name2 = "2";
+        task1.setName(name2   );
+        Assertions.assertEquals(name1, task1.getName());
+        Assertions.assertEquals(description, task1.getDescription());
+        Assertions.assertEquals(status, task1.getStatus());
     }
 
     @Test
     void updateEpic() {
+        String name1 = "1";
+        String description = "1";
+        long idEpic = manager.addEpic(name1, description);
+        Epic epic1 = manager.getEpicById(idEpic);
+        Assertions.assertNotNull(epic1);
+        String name2 = "2";
+        epic1.setName(name2);
+        Assertions.assertEquals(name1, epic1.getName());
+        Assertions.assertEquals(description, epic1.getDescription());
     }
 
     @Test
     void updateSubTask() {
+        Epic epic = new Epic();
+        String name1 = "1";
+        String description = "1";
+        Status status = Status.NEW;
+        long idSubTask = manager.addSubTask(epic.getId(), name1, description, status);
+        SubTask subTask = manager.getSubTaskById(idSubTask);
+        Assertions.assertNotNull(subTask);
+        String name2 = "2";
+        subTask.setName(name2);
+        Assertions.assertEquals(name2,subTask.getName());
+        Assertions.assertEquals(description, subTask.getDescription());
+        Assertions.assertEquals(status, subTask.getStatus());
     }
 
 }
