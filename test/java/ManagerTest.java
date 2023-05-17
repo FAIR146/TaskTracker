@@ -62,10 +62,13 @@ public class ManagerTest {
 
     @Test
     void addSubTask() {
+        long epicId = manager.addEpic("1", "1");
+        Epic epic = manager.getEpicById(epicId);
+        Assertions.assertNotNull(epic);
         String name = "Одеться";
         String description = "Встать";
         Status status = Status.NEW;
-        long idSubTask = manager.addSubTask(0 ,name, description, status);
+        long idSubTask = manager.addSubTask(epicId, name, description, status);
         SubTask subTask = manager.getSubTaskById(idSubTask);
         Assertions.assertEquals(name, subTask.getName());
         Assertions.assertEquals(description, subTask.getDescription());
@@ -87,7 +90,7 @@ public class ManagerTest {
     @Test
     void removeTaskById() {
         long idTask = manager.addTask("1", "1", Status.NEW);
-        Task task = manager.getEpicById(idTask);
+        Task task = manager.getTaskById(idTask);
         Assertions.assertNotNull(task);
         manager.removeTaskById(idTask);
         Task task1 = manager.getTaskById(idTask);

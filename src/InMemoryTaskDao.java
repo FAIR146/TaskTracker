@@ -35,12 +35,14 @@ public class InMemoryTaskDao implements TaskDao{
     }
 
     @Override
-    public long addSubTask(long id, String name, String description, Status status) {
-        SubTask subTask = new SubTask(getEpicById(id));
+    public long addSubTask(long idEpic, String name, String description, Status status) {
+        Epic epic = getEpicById(idEpic);
+        SubTask subTask = new SubTask(epic);
         subTask.setDescription(description);
         subTask.setStatus(status);
         subTask.setName(name);
         subTasks.put(idGeneratorSubTask, subTask);
+        epic.addSubTask(subTask);
         idGeneratorSubTask++;
         return subTask.getId();
     }
