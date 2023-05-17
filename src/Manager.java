@@ -1,37 +1,93 @@
 import java.util.ArrayList;
-import java.util.stream.Collectors;
+import java.util.List;
 
-public class Manager {
-    ArrayList<Task> tasks = new ArrayList<>();
-    Task task = new Task();
-    String statusNew = "New";
-    String statusInProgress = "In Progress";
-    String statusDone = "Done";
-    public Manager () {
-        tasks.add(task);
+public class Manager  {
+    private final TaskDao taskDao = new InMemoryTaskDao();
+
+    public long addTask(String name, String description, Status status) {
+        return taskDao.addTask(name,description,status);
     }
-    public void setStatusNew (Task task) {
-        task.setStatus(statusNew);
+
+    public long addEpic(String name, String description) {
+        return taskDao.addEpic(name, description);
     }
-    public void setStatusInProgress (Task task) {
-        task.setStatus(statusInProgress);
+
+    public long addSubTask(long id, String name, String description, Status status) {
+        return taskDao.addSubTask(id, name, description, status);
     }
-    public void setStatusDone (Task task) {
-        task.setStatus(statusDone);
+
+    public void removeEpicById(long id) {
+        taskDao.removeEpicById(id);
     }
+
+    public void removeTaskById(long id) {
+        taskDao.removeTaskById(id);
+    }
+
+    public void removeSubTaskById(long id) {
+        taskDao.removeSubTaskById(id);
+    }
+
+    public void removeAllEpics() {
+        taskDao.removeAllEpics();
+    }
+
+    public void removeAllSubTasks() {
+        taskDao.removeAllSubTasks();
+    }
+
     public void removeAllTasks() {
-        tasks.removeAll(tasks);
+        taskDao.removeAllTasks();
     }
-    public void removeTaskById (int id) {
-        tasks.remove(id);
-    }
-    public Task getTaskById (int id) {
-        tasks.stream()
-                .filter(task -> task.getId() == id)
-                .collect(Collectors.toList());
-        return task;
-    }
-    public void setStatus () {
 
+    public Epic getEpicById(long id) {
+        return taskDao.getEpicById(id);
     }
+
+    public Task getTaskById(long id) {
+        return taskDao.getTaskById(id);
+    }
+
+    public SubTask getSubTaskById(long id) {
+        return taskDao.getSubTaskById(id);
+    }
+
+    public List<Epic> getAllEpics() {
+        return taskDao.getAllEpics();
+    }
+
+    public List<SubTask> getAllSubTasks() {
+        return taskDao.getAllSubTasks();
+    }
+
+    public List<Task> getAllTasks() {
+        return taskDao.getAllTasks();
+    }
+    public void updateTask (long id, String name, String description, Status status) {
+        Task task = new Task();
+        task.setName(name);
+        task.setDescription(description);
+        task.setStatus(status);
+        task.setId(id);
+        taskDao.updateTask(task);
+    }
+    public void updateEpic (long id, String name, String description) {
+        Epic epic = new Epic();
+        List<SubTask> subTasks = taskDao.getEpicById(id).getSubTasks();
+        epic.setName(name);
+        epic.setDescription(description);
+        epic.setId(id);
+        for (SubTask subTask:subTasks) {
+            epic.addSubTask(subTask);
+        }
+        taskDao.updateEpic(epic);
+    }
+    public void updateSubTask (long id, String name, String description, Status status) {
+        SubTask subTask = new SubTask(getEpicById(id));
+        subTask.setDescription(description);
+        subTask.setStatus(status);
+        subTask.setName(name);
+        taskDao.updateSubTask(subTask);
+    }
+
 }
