@@ -86,7 +86,7 @@ public class ManagerTest {
 
     @Test
     void removeTaskById() {
-        long idTask = manager.addTask("", "", Status.NEW);
+        long idTask = manager.addTask("1", "1", Status.NEW);
         Task task = manager.getEpicById(idTask);
         Assertions.assertNotNull(task);
         manager.removeTaskById(idTask);
@@ -97,16 +97,15 @@ public class ManagerTest {
 
     @Test
     void removeSubTaskById() {
-        long idEpic =  manager.addEpic(" ", " ");
-        long idSubTask = manager.addSubTask(idEpic, "" , "", Status.NEW);
+        long idEpic =  manager.addEpic("1", "1");
+        long idSubTask = manager.addSubTask(idEpic, "2" , "2", Status.NEW);
         Epic epic = manager.getEpicById(idEpic);
         List<SubTask> subTasks = epic.getSubTasks();
+        Assertions.assertTrue(subTasks.stream().anyMatch(subTask -> subTask.getId() == idSubTask));
         manager.removeSubTaskById(idSubTask);
         SubTask subTask1 = manager.getSubTaskById(idSubTask);
         Assertions.assertNull(subTask1);
-
-
-        manager.getSubTaskById(idSubTask);
+        Assertions.assertFalse(epic.getSubTasks().stream().anyMatch(subTask -> subTask.getId() == idSubTask));
     }
 
     @Test
@@ -168,7 +167,7 @@ public class ManagerTest {
         Task taskSecond = manager.getTaskById(idTask2);
         manager.getAllTasks();
         Assertions.assertNull(taskFirst);
-        Assertions.assertNotNull(taskSecond);
+        Assertions.assertNull(taskSecond);
     }
 
     @Test
@@ -277,7 +276,7 @@ public class ManagerTest {
         Assertions.assertNotNull(task1);
         String name2 = "2";
         task1.setName(name2   );
-        Assertions.assertEquals(name1, task1.getName());
+        Assertions.assertEquals(name2, task1.getName());
         Assertions.assertEquals(description, task1.getDescription());
         Assertions.assertEquals(status, task1.getStatus());
     }
@@ -291,7 +290,7 @@ public class ManagerTest {
         Assertions.assertNotNull(epic1);
         String name2 = "2";
         epic1.setName(name2);
-        Assertions.assertEquals(name1, epic1.getName());
+        Assertions.assertEquals(name2, epic1.getName());
         Assertions.assertEquals(description, epic1.getDescription());
     }
 

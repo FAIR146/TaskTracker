@@ -47,11 +47,13 @@ public class InMemoryTaskDao implements TaskDao{
 
     @Override
     public void removeEpicById(long id) {
+        epics.get(id).getSubTasks().forEach(subTask -> subTasks.remove(subTask.getId()));
         epics.remove(id);
     }
 
     @Override
     public void removeSubTaskById(long id) {
+        subTasks.get(id).getEpic().removeSubTaskById(id);
         subTasks.remove(id);
     }
 
@@ -119,4 +121,5 @@ public class InMemoryTaskDao implements TaskDao{
     public void updateSubTask(SubTask subTask) {
         subTasks.put(subTask.getId(), subTask);
     }
+
 }
